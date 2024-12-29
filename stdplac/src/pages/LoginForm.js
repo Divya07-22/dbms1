@@ -1,3 +1,5 @@
+// LoginForm
+
 import React from "react";
 
 // CSS Styles in JS (Inline Style)
@@ -61,6 +63,7 @@ const style = {
     },
 
     input: {
+        width: "100%", // Full width input
         padding: "10px",
         margin: "10px 0 20px",
         borderRadius: "5px",
@@ -68,6 +71,10 @@ const style = {
         fontSize: "16px",
         outline: "none",
         transition: "border-color 0.3s",
+    },
+
+    inputFocus: {
+        borderColor: "#0066cc",
     },
 
     button: {
@@ -79,6 +86,7 @@ const style = {
         border: "none",
         cursor: "pointer",
         transition: "background-color 0.3s",
+        width: "100%", // Full width button
     },
 
     buttonHover: {
@@ -119,11 +127,19 @@ const LoginForm = () => {
                 <form style={style.form}>
                     <label style={style.label}>
                         Email:
-                        <input style={style.input} type="email" name="email" />
+                        <input
+                            style={{ ...style.input }}
+                            type="email"
+                            name="email"
+                        />
                     </label>
                     <label style={style.label}>
                         Password:
-                        <input style={style.input} type="password" name="password" />
+                        <input
+                            style={{ ...style.input }}
+                            type="password"
+                            name="password"
+                        />
                     </label>
                     <button style={style.button} type="submit">Login</button>
                 </form>

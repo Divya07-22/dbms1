@@ -1,28 +1,60 @@
+
+// CoordinatorSignUp
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const inputStyle = {
-    width: "100%",
-    padding: "0.8rem",
-    margin: "0.8rem 0",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
-    fontSize: "1rem",
-    outline: "none",
-    boxSizing: "border-box",
-};
-
-const buttonStyle = {
-    width: "100%",
-    padding: "0.8rem",
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
-    fontSize: "1rem",
-    fontWeight: "bold",
-    cursor: "pointer",
-    transition: "background-color 0.3s",
+const styles = {
+    container: {
+        maxWidth: "400px",
+        margin: "50px auto",
+        padding: "20px",
+        border: "1px solid #ddd",
+        borderRadius: "10px",
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+        backgroundColor: "#fff",
+    },
+    title: {
+        textAlign: "center",
+        marginBottom: "20px",
+        color: "#333",
+        fontSize: "1.5rem",
+    },
+    input: {
+        width: "100%",
+        padding: "12px",
+        margin: "10px 0",
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+        fontSize: "1rem",
+        outline: "none",
+        boxSizing: "border-box",
+        transition: "border-color 0.3s, box-shadow 0.3s",
+    },
+    inputFocus: {
+        borderColor: "#4CAF50",
+        boxShadow: "0 0 5px rgba(76, 175, 80, 0.5)",
+    },
+    button: {
+        width: "100%",
+        padding: "12px",
+        backgroundColor: "#4CAF50",
+        color: "white",
+        border: "none",
+        borderRadius: "8px",
+        fontSize: "1rem",
+        fontWeight: "bold",
+        cursor: "pointer",
+        transition: "background-color 0.3s",
+    },
+    buttonHover: {
+        backgroundColor: "#45a049",
+    },
+    errorMessage: {
+        color: "red",
+        textAlign: "center",
+        marginBottom: "15px",
+    },
 };
 
 const CoordinatorSignUp = () => {
@@ -33,12 +65,13 @@ const CoordinatorSignUp = () => {
         confirmPassword: "",
     });
 
-    const [error, setError] = useState(""); // To handle error messages
+    const [error, setError] = useState("");
+    const [focusedField, setFocusedField] = useState(null); // For handling focus styles
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-        setError(""); // Reset error on input change
+        setError("");
     };
 
     const validateForm = () => {
@@ -60,62 +93,84 @@ const CoordinatorSignUp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Validate form fields
         if (!validateForm()) {
             return;
         }
 
-        // Simulating successful sign-up alert
         alert("Signup successful!");
-
-        // Reset form fields
         setFormData({ name: "", email: "", password: "", confirmPassword: "" });
-
-        // Navigate to the dashboard
-        navigate("coordinator/dashboard"); // Correct path
+        navigate("/coordinator/dashboard");
     };
 
     return (
-        <div style={{ marginTop: '20px' }}>
-            <h2 style={{ textAlign: 'center' }}>Coordinator Sign Up</h2>
-            {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>} {/* Displaying error message */}
+        <div style={styles.container}>
+            <h2 style={styles.title}>Coordinator Sign Up</h2>
+            {error && <p style={styles.errorMessage}>{error}</p>}
             <form onSubmit={handleSubmit}>
-                <input 
-                    name="name" 
-                    type="text" 
-                    placeholder="Name" 
-                    onChange={handleChange} 
+                <input
+                    name="name"
+                    type="text"
+                    placeholder="Name"
+                    onChange={handleChange}
                     value={formData.name}
-                    style={inputStyle} 
+                    style={{
+                        ...styles.input,
+                        ...(focusedField === "name" ? styles.inputFocus : {}),
+                    }}
+                    onFocus={() => setFocusedField("name")}
+                    onBlur={() => setFocusedField(null)}
                 />
-                <input 
-                    name="email" 
-                    type="email" 
-                    placeholder="Email" 
-                    onChange={handleChange} 
+                <input
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    onChange={handleChange}
                     value={formData.email}
-                    style={inputStyle} 
+                    style={{
+                        ...styles.input,
+                        ...(focusedField === "email" ? styles.inputFocus : {}),
+                    }}
+                    onFocus={() => setFocusedField("email")}
+                    onBlur={() => setFocusedField(null)}
                 />
-                <input 
-                    name="password" 
-                    type="password" 
-                    placeholder="Password" 
-                    onChange={handleChange} 
+                <input
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    onChange={handleChange}
                     value={formData.password}
-                    style={inputStyle} 
+                    style={{
+                        ...styles.input,
+                        ...(focusedField === "password" ? styles.inputFocus : {}),
+                    }}
+                    onFocus={() => setFocusedField("password")}
+                    onBlur={() => setFocusedField(null)}
                 />
-                <input 
-                    name="confirmPassword" 
-                    type="password" 
-                    placeholder="Confirm Password" 
-                    onChange={handleChange} 
+                <input
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="Confirm Password"
+                    onChange={handleChange}
                     value={formData.confirmPassword}
-                    style={inputStyle} 
+                    style={{
+                        ...styles.input,
+                        ...(focusedField === "confirmPassword" ? styles.inputFocus : {}),
+                    }}
+                    onFocus={() => setFocusedField("confirmPassword")}
+                    onBlur={() => setFocusedField(null)}
                 />
-                <button 
-                    type="submit" 
-                    style={buttonStyle}
-                    disabled={!formData.name || !formData.email || !formData.password || !formData.confirmPassword || formData.password !== formData.confirmPassword}
+                <button
+                    type="submit"
+                    style={styles.button}
+                    onMouseOver={(e) => (e.target.style.backgroundColor = styles.buttonHover.backgroundColor)}
+                    onMouseOut={(e) => (e.target.style.backgroundColor = styles.button.backgroundColor)}
+                    disabled={
+                        !formData.name ||
+                        !formData.email ||
+                        !formData.password ||
+                        !formData.confirmPassword ||
+                        formData.password !== formData.confirmPassword
+                    }
                 >
                     Sign Up
                 </button>
